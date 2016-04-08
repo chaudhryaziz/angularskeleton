@@ -1,0 +1,26 @@
+<html >
+   <head>
+        <title> AngularJS Sample</title>
+        <script src="js/angular.min.js"></script>
+</head>
+
+<div id="readApp" ng-app="readData" ng-controller="customersCtrl">
+
+<table>
+  <tr ng-repeat="x in names">
+    <td>{{ x.EmployeeNumber }}</td>
+    <td>{{ x.FirstName }}</td>
+    <td>{{ x.LastName }}</td>
+  </tr>
+</table>
+
+
+<script>
+var app = angular.module('readData', []);
+app.controller('customersCtrl', function($scope, $http) {
+    $http.get("customers_mysql.php")
+    .then(function (response) {$scope.names = response.data.records;});
+});
+</script>
+</div>
+</html>

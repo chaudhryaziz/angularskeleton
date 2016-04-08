@@ -1,0 +1,58 @@
+<html >
+   <head>
+        <title> AngularJS Sample</title>
+        <script src="js/angular.min.js"></script>
+</head>
+<!-- This block of angular code seems to execute as expected. The question is how to get the second block to execute or do I combine the two in some way? This angular code executes properly.-->
+<div id="readApp" ng-app="readData" ng-controller="customersCtrl">
+
+<table>
+  <tr ng-repeat="x in names">
+    <td>{{ x.EmployeeNumber }}</td>
+    <td>{{ x.FirstName }}</td>
+    <td>{{ x.LastName }}</td>
+  </tr>
+</table>
+
+
+<script>
+var app = angular.module('readData', []);
+app.controller('customersCtrl', function($scope, $http) {
+    $http.get("customers_mysql.php")
+    .then(function (response) {$scope.names = response.data.records;});
+});
+</script>
+</div>
+<!-- This block of angular code does not execute. I don't think this angular app is correctly structured. It shows the fields and buttons but the code behind the button does not execute-->
+<div id="writeApp" ng-app="writeData" ng-controller="empcontroller">
+  <form>
+
+    Employee No. <input type="text" ng-model="empno"/><br />
+    First Name <input type="text" ng-model="fname"/><br />
+    Last Name <input type="text" ng-model="lname"/><br />
+    Department <input type="text" ng-model="dept"/><br />
+    <input type="button" value="submit" ng-click="insertdata()" /><br />
+  </form>
+  <script>
+  var app=angular.module('writeData',[]);
+  app.controller('empcontroller',function($scope,$http){
+    $scope.insertdata=function(){
+      $http.post("insert.php",{'empno':$scope.empno,'fname':$scope.fname,'lname':$scope.lname,'dept':$scope.dept}).success(function(data,status,headers,config){
+        console.log("data inserted successfully");
+      });
+    }
+  });
+  angular.bootstrap(document.getElementById("writeApp"),['namesList']);
+  </script>
+
+
+
+
+
+
+
+
+
+
+</div>
+</html>
